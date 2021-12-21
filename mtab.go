@@ -20,14 +20,18 @@ type Entry struct {
 
 const mtabFmt = `%s %s %s %s %d %d`
 
+var escaped = strings.NewReplacer(
+	`\040`, " ",
+	`\011`, "\t",
+	`\012`, "\n",
+	`\134`, `\`,
+)
+
 // unescapeFields unescapes characters on string fields. See getmntent(3)
 // manpage for details.
 func unescapeFields(m *Entry) {
-	for _, f := range []*string{&m.Fsname, &m.Dir, &m.Type, &m.Opts} {
-		*f = strings.Replace(*f, `\040`, " ", -1)
-		*f = strings.Replace(*f, `\011`, "\t", -1)
-		*f = strings.Replace(*f, `\012`, "\n", -1)
-		*f = strings.Replace(*f, `\134`, `\`, -1)
+	for _, f := range [...]*string{&m.Fsname, &m.Dir, &m.Type, &m.Opts} {
+		*f = escaped.Replace(*f)
 	}
 }
 
