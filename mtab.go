@@ -1,3 +1,4 @@
+// Package mtab parses /proc/self/mounts entries on a Linux system.
 package mtab // import "github.com/artyom/mtab"
 
 import (
@@ -7,7 +8,7 @@ import (
 	"strings"
 )
 
-// Entry corresponds to mntent struct. See  getmntent(3) manpage for further
+// Entry corresponds to mntent struct. See getmntent(3) manpage for further
 // details.
 type Entry struct {
 	Fsname string // name of mounted file system
@@ -35,8 +36,8 @@ func unescapeFields(m *Entry) {
 	}
 }
 
-// Entries reads mtab entries from given file. Usually you should use
-// `/etc/fstab` or `/proc/self/mounts` as file name.
+// Entries reads mtab entries from a given file. Usually you should use
+// `/etc/fstab` or `/proc/self/mounts` as a file name.
 func Entries(fname string) ([]Entry, error) {
 	f, err := os.Open(fname)
 	if err != nil {
